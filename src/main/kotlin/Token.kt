@@ -4,5 +4,12 @@ enum class Token {
     ADD,
     SUBTRACT,
     MULTIPLY,
-    DIVIDE
+    DIVIDE,
+
+    // Comparison operators
+    LESS,           // <
+    MORE,           // >
+    EQUAL,          // =
+    MORE_EQUAL,     // >=
+    LESS_EQUAL      // <=
 }

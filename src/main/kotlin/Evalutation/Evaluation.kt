@@ -14,6 +14,13 @@ fun eval(expression: Any): Any {
         Token.MULTIPLY -> evalMultiply(expression.getParams())
         Token.DIVIDE -> evalDivide(expression.getParams())
 
+        // Comparison operators
+        Token.LESS -> evalLess(expression.getParams())
+        Token.MORE -> evalMore(expression.getParams())
+        Token.EQUAL -> evalEqual(expression.getParams())
+        Token.MORE_EQUAL -> evalMoreEqual(expression.getParams())
+        Token.LESS_EQUAL -> evalLessEqual(expression.getParams())
+
         else -> throw IllegalArgumentException()
     }
 }

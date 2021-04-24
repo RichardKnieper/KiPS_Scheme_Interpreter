@@ -11,7 +11,8 @@ fun main(args: Array<String>) {
             try {
                 println(eval(it))
             } catch (e: Exception) {
-                println("Something went wrong")
+//                println("Something went wrong")
+                e.printStackTrace()
             }
         }
 

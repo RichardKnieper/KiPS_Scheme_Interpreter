@@ -40,6 +40,13 @@ private fun String.toToken(): Any {
             "*" -> Token.MULTIPLY
             "/" -> Token.DIVIDE
 
+            // Comparison operators
+            "<" -> Token.LESS
+            ">" -> Token.MORE
+            "=" -> Token.EQUAL
+            ">=" -> Token.MORE_EQUAL
+            "<=" -> Token.LESS_EQUAL
+
             else -> this
         }
     }
