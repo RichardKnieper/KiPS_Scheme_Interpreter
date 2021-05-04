@@ -47,6 +47,8 @@ private fun String.toToken(): Any {
             ">=" -> Token.MORE_EQUAL
             "<=" -> Token.LESS_EQUAL
 
+            "lambda" -> Token.LAMBDA
+
             else -> this
         }
     }
