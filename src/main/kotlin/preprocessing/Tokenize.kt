@@ -1,3 +1,6 @@
+package preprocessing
+
+import domain.Token
 import java.lang.Double.parseDouble
 import java.lang.NumberFormatException
 

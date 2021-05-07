@@ -1,5 +1,6 @@
-import evalutation.evalLambda
-import java.lang.IllegalArgumentException
+package evalutation
+
+import domain.Token
 
 @Suppress("UNCHECKED_CAST")
 fun eval(expression: Any): Any {

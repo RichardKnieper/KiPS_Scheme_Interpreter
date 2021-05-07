@@ -1,3 +1,5 @@
+package evalutation
+
 fun evalAdd(params: List<Any>): Double {
     return params.map {
         eval(it) as Double

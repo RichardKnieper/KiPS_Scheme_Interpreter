@@ -1,3 +1,5 @@
+package evalutation
+
 fun evalLess(params: List<Any>): Boolean {
     return evalComparisons(params) { a, b -> a < b }
 }

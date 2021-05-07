@@ -1,8 +1,5 @@
 package evalutation
 
-import eval
-import java.lang.IllegalArgumentException
-
 /**
  * ((lambda (x) (* x x)) 2)
  * params = listOf("x")
@@ -11,6 +8,7 @@ import java.lang.IllegalArgumentException
  */
 @Suppress("UNCHECKED_CAST")
 fun evalLambda(params: List<Any>, method: Any, input: List<Any>): Any {
+    // TODO create closure!!!
     if (params.size != input.size) {
         throw IllegalArgumentException("Too many or too few parameters!")
     }

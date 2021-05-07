@@ -1,3 +1,5 @@
+package domain
+
 enum class Token {
 
     // Math operations
