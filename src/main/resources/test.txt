@@ -1,1 +1,6 @@
-(define (square x) (* x x))
+(define erzeuge-konto (lambda (saldo)
+    (lambda (betrag)
+        (set! saldo (+ saldo betrag))
+        saldo)))
+(define konto (erzeuge-konto 1000))
+(konto 100)

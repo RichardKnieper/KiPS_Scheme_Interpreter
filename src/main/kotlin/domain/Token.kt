@@ -16,6 +16,6 @@ enum class Token {
     LESS_EQUAL,      // <=
 
     LAMBDA,
-
+    DEFINE,
     SET
 }

@@ -51,7 +51,7 @@ private fun String.toToken(): Any {
             "<=" -> Token.LESS_EQUAL
 
             "lambda" -> Token.LAMBDA
-
+            "define" -> Token.DEFINE
             "set!" -> Token.SET
 
             else -> this

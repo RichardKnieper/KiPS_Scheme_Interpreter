@@ -24,7 +24,7 @@ fun eval(expression: Any): Any {
         return eval(ENVIROMENT[expression]!!)
     }
 
-    expression as List<*>
+    expression as List<Any>
 
     return when (expression[0]) {
 
@@ -41,14 +41,18 @@ fun eval(expression: Any): Any {
         Token.MORE_EQUAL -> evalMoreEqual(expression.getParams())
         Token.LESS_EQUAL -> evalLessEqual(expression.getParams())
 
+        Token.LAMBDA -> Closure(expression, mutableMapOf(), CURRENT_CLOSURE)
+        Token.DEFINE -> evalDefine(expression.getParams())
         Token.SET -> evalSet(expression.getParams())
 
-        in ENVIROMENT.keys -> {
+        in ENVIROMENT -> {
             val expressionToEvaluate = mutableListOf<Any>()
             val variable = ENVIROMENT[expression[0]]!!
+
             if (variable !is Closure) {
-                throw IllegalArgumentException("$variable is not a method")
+                throw IllegalArgumentException("Something went wrong")
             }
+
             val oldClosure = CURRENT_CLOSURE
             CURRENT_CLOSURE = variable
 
@@ -61,6 +65,17 @@ fun eval(expression: Any): Any {
         }
 
         else -> {
+            closure = CURRENT_CLOSURE
+            while (closure != null) {
+                if(expression[0] in closure.env) {
+                    val expressionToEvaluate = mutableListOf<Any>()
+                    expressionToEvaluate.add(closure.env[expression[0]]!!)
+                    expressionToEvaluate.addAll(expression.getParams())
+                    return eval(expressionToEvaluate)
+                }
+                closure = closure.parent
+            }
+
             var current = expression[0]
 
             if (current is List<*> && current[0] == Token.LAMBDA) {
