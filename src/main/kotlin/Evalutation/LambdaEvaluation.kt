@@ -1,50 +1,45 @@
 package evalutation
 
+import CURRENT_CLOSURE
+import domain.Closure
+import java.lang.IllegalArgumentException
+
 /**
  * ((lambda (x) (* x x)) 2)
  * params = listOf("x")
- * method = listOf(ADD, "x", "x") OR ("x") -> Exception
+ * method = listOf(ADD, "x", "x") OR ("x")
  * input = listOf(2)
  */
 @Suppress("UNCHECKED_CAST")
-fun evalLambda(params: List<Any>, method: Any, input: List<Any>): Any {
-    // TODO create closure!!!
+fun evalLambda(params: List<String>, methods: List<Any>, returnMethod: Any, input: List<Any>): Any {
     if (params.size != input.size) {
         throw IllegalArgumentException("Too many or too few parameters!")
     }
 
-    val methodAsList = if (method is List<*> && method.size == 1) {
+    if (returnMethod is List<*> && returnMethod.size == 1) {
         // ((lambda (x) (x))2)
         throw IllegalArgumentException("application: not a procedure")
-    } else if (method is List<*>) {
-        method as List<Any>
+    }
+
+    methods.forEach { eval(it) }
+
+    val returnMethodAsList = if(returnMethod is List<*>) {
+        returnMethod as List<Any>
     } else {
-        listOf(method)
+        listOf(returnMethod)
     }
 
-    val replacedMethod = methodAsList.fillParams(params, input)
-    return if (replacedMethod.size == 1) {
-        eval(replacedMethod[0])
+    val closureEnv = params.mapIndexed { i, param -> param to input[i] }.toMap()
+
+    val closure = Closure(returnMethodAsList, closureEnv, CURRENT_CLOSURE)
+    CURRENT_CLOSURE = closure
+
+    val output = if (returnMethodAsList.size == 1) {
+        eval(returnMethodAsList[0])
     } else {
-        eval(replacedMethod)
+        eval(returnMethodAsList)
     }
-}
 
-private fun List<Any>.fillParams(params: List<Any>, input: List<Any>): List<Any> {
-    var replaced = this
-    params.forEachIndexed { i, param ->
-        replaced = replaced.fillParam(param as String, input[i])
-    }
-    return replaced
-}
-
-@Suppress("UNCHECKED_CAST")
-private fun List<Any>.fillParam(param: String, value: Any): List<Any> {
-    return this.map {
-        when (it) {
-            is List<*> -> (it as List<Any>).fillParam(param, value)
-            param -> value
-            else -> it
-        }
-    }
+    CURRENT_CLOSURE = CURRENT_CLOSURE!!.parent
+    return output
 }

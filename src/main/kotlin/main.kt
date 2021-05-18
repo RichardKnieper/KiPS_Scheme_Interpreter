@@ -1,9 +1,19 @@
+import domain.Closure
+import domain.Token
 import evalutation.eval
 import preprocessing.tokenize
 import java.io.File
-import java.lang.Exception
+
+val ENVIROMENT = mutableMapOf<String, Any>()
+var CURRENT_CLOSURE: Closure? = null
 
 fun main(args: Array<String>) {
+    ENVIROMENT["plusTen"] = Closure(
+        listOf(Token.LAMBDA, listOf("x"), listOf(Token.ADD, "x", "y")),
+        mapOf("y" to 10.0),
+        null
+    )
+
     while (true) {
         print(">> ")
         var input = readLine().toString()
