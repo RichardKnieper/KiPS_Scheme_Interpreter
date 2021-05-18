@@ -1,5 +1,4 @@
 import domain.Closure
-import domain.Token
 import evalutation.eval
 import preprocessing.tokenize
 import java.io.File
@@ -15,10 +14,16 @@ fun main(args: Array<String>) {
         when {
             input == ":q" -> break
 
-            input.startsWith(":l ") -> {
-                val name = input.replace(":l ", "")
-                val path = "C:\\Users\\Richard\\IdeaProjects\\KiPS_Scheme_Interpreter\\src\\main\\resources\\$name"
-                input = File(path).inputStream().bufferedReader().use { it.readText() }
+            input.startsWith(":t ") -> {
+                val name = input.replace(":t ", "")
+                val path = "C:\\Users\\Richard\\IdeaProjects\\KiPS_Scheme_Interpreter\\src\\main\\resources\\testfiles\\$name.txt"
+                input = try {
+                    File(path).inputStream().bufferedReader().use { it.readText() }
+                } catch (e: Exception) {
+                    println("No test with that name exists.")
+                    continue
+                }
+                println(input)
             }
         }
 
@@ -27,7 +32,6 @@ fun main(args: Array<String>) {
         tokenized.forEach {
             try {
                 println(eval(it))
-                var x = 12
             } catch (e: Exception) {
 //                println("Something went wrong")
                 e.printStackTrace()
