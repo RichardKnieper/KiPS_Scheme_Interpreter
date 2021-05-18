@@ -52,6 +52,8 @@ private fun String.toToken(): Any {
 
             "lambda" -> Token.LAMBDA
 
+            "set!" -> Token.SET
+
             else -> this
         }
     }

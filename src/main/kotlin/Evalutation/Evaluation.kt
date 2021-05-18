@@ -4,6 +4,7 @@ import CURRENT_CLOSURE
 import ENVIROMENT
 import domain.Closure
 import domain.Token
+import kotlin.math.exp
 
 @Suppress("UNCHECKED_CAST")
 fun eval(expression: Any): Any {
@@ -19,7 +20,7 @@ fun eval(expression: Any): Any {
         closure = closure.parent
     }
 
-    if (expression in ENVIROMENT.keys) {
+    if (expression in ENVIROMENT) {
         return eval(ENVIROMENT[expression]!!)
     }
 
@@ -39,6 +40,8 @@ fun eval(expression: Any): Any {
         Token.EQUAL -> evalEqual(expression.getParams())
         Token.MORE_EQUAL -> evalMoreEqual(expression.getParams())
         Token.LESS_EQUAL -> evalLessEqual(expression.getParams())
+
+        Token.SET -> evalSet(expression.getParams())
 
         in ENVIROMENT.keys -> {
             val expressionToEvaluate = mutableListOf<Any>()

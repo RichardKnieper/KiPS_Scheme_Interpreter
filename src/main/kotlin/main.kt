@@ -10,7 +10,7 @@ var CURRENT_CLOSURE: Closure? = null
 fun main(args: Array<String>) {
     ENVIROMENT["plusTen"] = Closure(
         listOf(Token.LAMBDA, listOf("x"), listOf(Token.ADD, "x", "y")),
-        mapOf("y" to 10.0),
+        mutableMapOf("y" to 10.0),
         null
     )
 

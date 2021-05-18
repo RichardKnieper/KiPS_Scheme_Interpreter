@@ -29,7 +29,7 @@ fun evalLambda(params: List<String>, methods: List<Any>, returnMethod: Any, inpu
         listOf(returnMethod)
     }
 
-    val closureEnv = params.mapIndexed { i, param -> param to input[i] }.toMap()
+    val closureEnv = params.mapIndexed { i, param -> param to input[i] }.toMap().toMutableMap()
 
     val closure = Closure(returnMethodAsList, closureEnv, CURRENT_CLOSURE)
     CURRENT_CLOSURE = closure
