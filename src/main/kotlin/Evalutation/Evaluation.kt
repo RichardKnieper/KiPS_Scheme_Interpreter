@@ -49,13 +49,14 @@ fun eval(expression: Any): Any {
             if (variable !is Closure) {
                 throw IllegalArgumentException("$variable is not a method")
             }
+            val oldClosure = CURRENT_CLOSURE
             CURRENT_CLOSURE = variable
 
             expressionToEvaluate.add(variable.method)
             expressionToEvaluate.addAll(expression.getParams())
 
             val evaluatedExpression = eval(expressionToEvaluate)
-            CURRENT_CLOSURE = CURRENT_CLOSURE!!.parent
+            CURRENT_CLOSURE = oldClosure
             evaluatedExpression
         }
 
@@ -68,7 +69,7 @@ fun eval(expression: Any): Any {
                 current = current as List<Any>
                 val params = current[1] as List<String>
                 val methods = try {
-                    current.subList(2, current.size - 2)
+                    current.subList(2, current.size - 1)
                 } catch (ex: Exception){
                     listOf()
                 }

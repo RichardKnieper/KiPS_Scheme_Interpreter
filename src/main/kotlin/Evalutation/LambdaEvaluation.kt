@@ -2,6 +2,7 @@ package evalutation
 
 import CURRENT_CLOSURE
 import domain.Closure
+import domain.Token
 import java.lang.IllegalArgumentException
 
 /**
@@ -21,7 +22,6 @@ fun evalLambda(params: List<String>, methods: List<Any>, returnMethod: Any, inpu
         throw IllegalArgumentException("application: not a procedure")
     }
 
-    methods.forEach { eval(it) }
 
     val returnMethodAsList = if(returnMethod is List<*>) {
         returnMethod as List<Any>
@@ -34,6 +34,8 @@ fun evalLambda(params: List<String>, methods: List<Any>, returnMethod: Any, inpu
     val closure = Closure(returnMethodAsList, closureEnv, CURRENT_CLOSURE)
     CURRENT_CLOSURE = closure
 
+    methods.forEach { eval(it) }
+
     val output = if (returnMethodAsList.size == 1) {
         eval(returnMethodAsList[0])
     } else {
@@ -41,5 +43,10 @@ fun evalLambda(params: List<String>, methods: List<Any>, returnMethod: Any, inpu
     }
 
     CURRENT_CLOSURE = CURRENT_CLOSURE!!.parent
-    return output
+
+    return if(output is List<*> && output[0] == Token.LAMBDA) {
+        Closure(output as List<Any>, closureEnv, CURRENT_CLOSURE)
+    } else {
+        output
+    }
 }
