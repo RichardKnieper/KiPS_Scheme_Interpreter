@@ -1,5 +1,6 @@
 import domain.Closure
 import evalutation.eval
+import preprocessing.replace
 import preprocessing.tokenize
 import java.io.File
 
@@ -28,8 +29,9 @@ fun main(args: Array<String>) {
         }
 
         val tokenized = tokenize(input)
+        val replaced = replace(tokenized)
 
-        tokenized.forEach {
+        replaced.forEach {
             try {
                 println(eval(it))
             } catch (e: Exception) {

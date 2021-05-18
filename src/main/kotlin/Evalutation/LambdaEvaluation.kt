@@ -22,7 +22,6 @@ fun evalLambda(params: List<String>, methods: List<Any>, returnMethod: Any, inpu
         throw IllegalArgumentException("application: not a procedure")
     }
 
-
     val returnMethodAsList = if(returnMethod is List<*>) {
         returnMethod as List<Any>
     } else {

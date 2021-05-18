@@ -1,9 +1,9 @@
 package evalutation
 
 fun evalAdd(params: List<Any>): Double {
-    return params.map {
+    return params.sumOf {
         eval(it) as Double
-    }.sum()
+    }
 }
 
 fun evalSub(params: List<Any>): Double {

@@ -1,6 +1,6 @@
-(define erzeuge-konto (lambda (saldo)
+(define (erzeuge-konto)
     (lambda (betrag)
         (set! saldo (+ saldo betrag))
-        saldo)))
+        saldo))
 (define konto (erzeuge-konto 1000))
 (konto 100)
