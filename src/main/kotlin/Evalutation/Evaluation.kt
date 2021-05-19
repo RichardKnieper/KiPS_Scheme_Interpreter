@@ -8,7 +8,7 @@ import kotlin.math.exp
 
 @Suppress("UNCHECKED_CAST")
 fun eval(expression: Any): Any {
-    if (expression is Double) {
+    if (expression is Double || expression is Boolean) {
         return expression
     }
 
@@ -44,6 +44,8 @@ fun eval(expression: Any): Any {
         Token.LAMBDA -> Closure(expression, mutableMapOf(), CURRENT_CLOSURE)
         Token.DEFINE -> evalDefine(expression.getParams())
         Token.SET -> evalSet(expression.getParams())
+
+        Token.IF -> evalIf(expression.getParams())
 
         in ENVIROMENT -> {
             val expressionToEvaluate = mutableListOf<Any>()

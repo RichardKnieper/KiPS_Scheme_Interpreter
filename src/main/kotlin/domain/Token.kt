@@ -17,5 +17,8 @@ enum class Token {
 
     LAMBDA,
     DEFINE,
-    SET
+    SET,
+
+    IF,
+    COND
 }

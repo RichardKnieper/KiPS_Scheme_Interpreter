@@ -54,6 +54,11 @@ private fun String.toToken(): Any {
             "define" -> Token.DEFINE
             "set!" -> Token.SET
 
+            "if" -> Token.IF
+            "cond" -> Token.COND
+            "#t" -> true
+            "#f" -> false
+
             else -> this
         }
     }
