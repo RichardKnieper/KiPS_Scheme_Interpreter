@@ -1,4 +1,4 @@
-(define (erzeuge-konto)
+(define (erzeuge-konto saldo)
     (lambda (betrag)
         (set! saldo (+ saldo betrag))
         saldo))
