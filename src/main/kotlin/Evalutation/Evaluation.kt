@@ -1,10 +1,10 @@
 package evalutation
 
 import CURRENT_CLOSURE
-import ENVIROMENT
+import ENVIRONMENT
 import domain.Closure
+import domain.ListWrapper
 import domain.Token
-import kotlin.math.exp
 
 @Suppress("UNCHECKED_CAST")
 fun eval(expression: Any): Any {
@@ -20,8 +20,12 @@ fun eval(expression: Any): Any {
         closure = closure.parent
     }
 
-    if (expression in ENVIROMENT) {
-        return eval(ENVIROMENT[expression]!!)
+    if (expression in ENVIRONMENT) {
+        return eval(ENVIRONMENT[expression]!!)
+    }
+
+    if (expression is ListWrapper) {
+        return expression
     }
 
     expression as List<Any>
@@ -47,9 +51,13 @@ fun eval(expression: Any): Any {
 
         Token.IF -> evalIf(expression.getParams())
 
-        in ENVIROMENT -> {
+        Token.LIST -> ListWrapper(expression.getParams().map { eval(it) })
+        Token.CAR -> evalCar(expression.getParams())
+        Token.CDR -> evalCdr(expression.getParams())
+
+        in ENVIRONMENT -> {
             val expressionToEvaluate = mutableListOf<Any>()
-            val variable = ENVIROMENT[expression[0]]!!
+            val variable = ENVIRONMENT[expression[0]]!!
 
             if (variable !is Closure) {
                 throw IllegalArgumentException("Something went wrong")
@@ -67,6 +75,7 @@ fun eval(expression: Any): Any {
         }
 
         else -> {
+            // TODO this has to happen before "in ENVIRONMENT"
             closure = CURRENT_CLOSURE
             while (closure != null) {
                 if(expression[0] in closure.env) {

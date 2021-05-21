@@ -20,5 +20,9 @@ enum class Token {
     SET,
 
     IF,
-    COND
+    COND,
+
+    LIST,
+    CAR,
+    CDR
 }

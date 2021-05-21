@@ -4,7 +4,7 @@ import preprocessing.replace
 import preprocessing.tokenize
 import java.io.File
 
-val ENVIROMENT = mutableMapOf<String, Any>()
+val ENVIRONMENT = mutableMapOf<String, Any>()
 var CURRENT_CLOSURE: Closure? = null
 
 fun main(args: Array<String>) {

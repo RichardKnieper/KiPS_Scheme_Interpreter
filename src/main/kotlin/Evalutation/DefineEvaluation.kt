@@ -1,8 +1,7 @@
 package evalutation
 
 import CURRENT_CLOSURE
-import ENVIROMENT
-import domain.Token
+import ENVIRONMENT
 import java.lang.IllegalArgumentException
 
 @Suppress("UNCHECKED_CAST")
@@ -17,6 +16,6 @@ fun evalDefine(params: List<Any>) {
     if (CURRENT_CLOSURE != null) {
         CURRENT_CLOSURE!!.env[key] = value
     } else {
-        ENVIROMENT[key] = value
+        ENVIRONMENT[key] = value
     }
 }

@@ -59,6 +59,10 @@ private fun String.toToken(): Any {
             "#t" -> true
             "#f" -> false
 
+            "list" -> Token.LIST
+            "car" -> Token.CAR
+            "cdr" -> Token.CDR
+
             else -> this
         }
     }

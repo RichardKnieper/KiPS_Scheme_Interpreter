@@ -1,7 +1,7 @@
 package evalutation
 
 import CURRENT_CLOSURE
-import ENVIROMENT
+import ENVIRONMENT
 import java.lang.IllegalArgumentException
 
 fun evalSet(params: List<Any>) {
@@ -21,8 +21,8 @@ fun evalSet(params: List<Any>) {
         closure = closure.parent
     }
 
-    if (key in ENVIROMENT) {
-        ENVIROMENT[key] = value
+    if (key in ENVIRONMENT) {
+        ENVIRONMENT[key] = value
         return
     }
 
