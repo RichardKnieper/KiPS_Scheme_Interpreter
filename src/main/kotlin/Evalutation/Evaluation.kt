@@ -55,36 +55,17 @@ fun eval(expression: Any): Any {
         Token.CAR -> evalCar(expression.getParams())
         Token.CDR -> evalCdr(expression.getParams())
 
-        in ENVIRONMENT -> {
-            val expressionToEvaluate = mutableListOf<Any>()
-            val variable = ENVIRONMENT[expression[0]]!!
-
-            if (variable !is Closure) {
-                throw IllegalArgumentException("Something went wrong")
-            }
-
-            val oldClosure = CURRENT_CLOSURE
-            CURRENT_CLOSURE = variable
-
-            expressionToEvaluate.add(variable.method)
-            expressionToEvaluate.addAll(expression.getParams())
-
-            val evaluatedExpression = eval(expressionToEvaluate)
-            CURRENT_CLOSURE = oldClosure
-            evaluatedExpression
-        }
-
         else -> {
-            // TODO this has to happen before "in ENVIRONMENT"
             closure = CURRENT_CLOSURE
             while (closure != null) {
                 if(expression[0] in closure.env) {
-                    val expressionToEvaluate = mutableListOf<Any>()
-                    expressionToEvaluate.add(closure.env[expression[0]]!!)
-                    expressionToEvaluate.addAll(expression.getParams())
-                    return eval(expressionToEvaluate)
+                    return evalClosure(closure.env[expression[0]]!!, expression.getParams())
                 }
                 closure = closure.parent
+            }
+
+            if (expression[0] in ENVIRONMENT) {
+                return evalClosure(ENVIRONMENT[expression[0]]!!, expression.getParams())
             }
 
             var current = expression[0]
