@@ -1,0 +1,17 @@
+(define a (list 1 2 '()))
+a
+
+(define b (list 1 2 '() '()))
+b
+
+(define c (cons 1 (cons '() '())))
+c
+
+(define d (cons 1 2))
+d
+
+(define e (cons 1 (cons '() 1)))
+e
+
+(define f (cons 1 (cons 2 (cons 3 4))))
+f

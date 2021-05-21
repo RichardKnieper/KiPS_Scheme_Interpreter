@@ -1,4 +1,5 @@
 import domain.Closure
+import domain.Token
 import evalutation.eval
 import preprocessing.replace
 import preprocessing.tokenize
@@ -33,7 +34,13 @@ fun main(args: Array<String>) {
 
         replaced.forEach {
             try {
-                println(eval(it))
+                val evaluated = eval(it)
+                val toPrint = when (evaluated) {
+                    is Closure -> "#<procedure:$it>"
+                    Token.LIST_END -> "()"
+                    else -> evaluated
+                }
+                println(toPrint)
             } catch (e: Exception) {
 //                println("Something went wrong")
                 e.printStackTrace()

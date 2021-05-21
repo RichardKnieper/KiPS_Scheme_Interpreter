@@ -13,7 +13,7 @@ enum class Token {
     MORE,           // >
     EQUAL,          // =
     MORE_EQUAL,     // >=
-    LESS_EQUAL,      // <=
+    LESS_EQUAL,     // <=
 
     LAMBDA,
     DEFINE,
@@ -22,7 +22,9 @@ enum class Token {
     IF,
     COND,
 
+    CONS,
     LIST,
     CAR,
-    CDR
+    CDR,
+    LIST_END // '()
 }

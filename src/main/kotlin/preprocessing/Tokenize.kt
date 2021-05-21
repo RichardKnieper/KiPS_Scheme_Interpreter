@@ -2,9 +2,31 @@ package preprocessing
 
 import domain.Token
 import java.lang.Double.parseDouble
-import java.lang.NumberFormatException
 
-fun tokenize(input: String) = input.parseToList().parseToTokens()
+fun tokenize(input: String) = input.preTokenize().parseToList().parseToTokens()
+
+private fun String.preTokenize(): List<Any> {
+    val output = mutableListOf<Any>()
+    this.split("'()")
+        .forEach {
+            output.add(it)
+            output.add(Token.LIST_END)
+        }
+    return output.subList(0, output.size - 1)
+}
+
+@Suppress("UNCHECKED_CAST")
+private fun List<Any>.parseToList(): List<Any> {
+    val output = mutableListOf<Any>()
+    this.forEach {
+        if(it == Token.LIST_END) {
+            output.add(it)
+        } else {
+            output.addAll((it as String).parseToList())
+        }
+    }
+    return output
+}
 
 private fun String.parseToList(): List<String> {
     return this.trimIndent()
@@ -15,7 +37,7 @@ private fun String.parseToList(): List<String> {
         .filter { it.isNotEmpty() }
 }
 
-private fun List<String>.parseToTokens(): List<Any> {
+private fun List<Any>.parseToTokens(): List<Any> {
     val stack = mutableListOf<MutableList<Any>>()
     stack.add(0, mutableListOf())
     this.forEach {
@@ -31,10 +53,10 @@ private fun List<String>.parseToTokens(): List<Any> {
     return stack[0]
 }
 
-private fun String.toToken(): Any {
+private fun Any.toToken(): Any {
     return try {
-        parseDouble(this)
-    } catch (e: NumberFormatException) {
+        parseDouble(this as String)
+    } catch (e: Exception) {
         when(this) {
 
             // Math operations
@@ -59,6 +81,7 @@ private fun String.toToken(): Any {
             "#t" -> true
             "#f" -> false
 
+            "cons" -> Token.CONS
             "list" -> Token.LIST
             "car" -> Token.CAR
             "cdr" -> Token.CDR

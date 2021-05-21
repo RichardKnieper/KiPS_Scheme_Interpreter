@@ -3,7 +3,7 @@ package evalutation
 import CURRENT_CLOSURE
 import ENVIRONMENT
 import domain.Closure
-import domain.ListWrapper
+import domain.Datastructure
 import domain.Token
 
 @Suppress("UNCHECKED_CAST")
@@ -20,12 +20,11 @@ fun eval(expression: Any): Any {
         closure = closure.parent
     }
 
-    if (expression in ENVIRONMENT) {
-        return eval(ENVIRONMENT[expression]!!)
-    }
-
-    if (expression is ListWrapper) {
-        return expression
+    when (expression) {
+        in ENVIRONMENT -> return eval(ENVIRONMENT[expression]!!)
+        is Datastructure -> return expression
+        is Closure -> return expression
+        Token.LIST_END -> return expression
     }
 
     expression as List<Any>
@@ -51,7 +50,8 @@ fun eval(expression: Any): Any {
 
         Token.IF -> evalIf(expression.getParams())
 
-        Token.LIST -> ListWrapper(expression.getParams().map { eval(it) })
+        Token.CONS -> evalCons(expression.getParams())
+        Token.LIST -> evalList(expression.getParams())
         Token.CAR -> evalCar(expression.getParams())
         Token.CDR -> evalCdr(expression.getParams())
 
