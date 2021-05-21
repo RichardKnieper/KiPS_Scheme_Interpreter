@@ -1,11 +1,15 @@
 (define a (list 1 2 '()))
 a
+(length a)
+(null? a)
 
 (define b (list 1 2 '() '()))
 b
+(length b)
 
 (define c (cons 1 (cons '() '())))
 c
+(length c)
 
 (define d (cons 1 2))
 d
@@ -15,3 +19,7 @@ e
 
 (define f (cons 1 (cons 2 (cons 3 4))))
 f
+
+(define g (list))
+(length g)
+(null? g)

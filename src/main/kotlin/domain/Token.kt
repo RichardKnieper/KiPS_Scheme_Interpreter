@@ -26,5 +26,7 @@ enum class Token {
     LIST,
     CAR,
     CDR,
-    LIST_END // '()
+    LIST_END, // '()
+    LENGTH,
+    IS_LIST_EMPTY
 }

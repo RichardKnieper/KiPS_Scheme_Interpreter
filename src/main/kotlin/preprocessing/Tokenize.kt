@@ -85,6 +85,8 @@ private fun Any.toToken(): Any {
             "list" -> Token.LIST
             "car" -> Token.CAR
             "cdr" -> Token.CDR
+            "length" -> Token.LENGTH
+            "null?" -> Token.IS_LIST_EMPTY
 
             else -> this
         }

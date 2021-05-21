@@ -4,8 +4,12 @@ class Datastructure(val list: List<Any>) {
     fun car() = list[0]
     fun cdr() = Datastructure(list.subList(1, list.size))
 
+    fun isList() = list.last() == Token.LIST_END
+    fun size() = list.size - 1
+    fun isEmpty() = list.size == 1
+
     override fun toString(): String {
-        return if(list.last() == Token.LIST_END) {
+        return if(isList()) {
             listAsString()
         } else {
             consAsString()

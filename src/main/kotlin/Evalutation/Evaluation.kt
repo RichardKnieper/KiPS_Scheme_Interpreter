@@ -54,6 +54,8 @@ fun eval(expression: Any): Any {
         Token.LIST -> evalList(expression.getParams())
         Token.CAR -> evalCar(expression.getParams())
         Token.CDR -> evalCdr(expression.getParams())
+        Token.LENGTH -> evalLength(expression.getParams())
+        Token.IS_LIST_EMPTY -> evalIsListEmpty(expression.getParams())
 
         else -> {
             closure = CURRENT_CLOSURE

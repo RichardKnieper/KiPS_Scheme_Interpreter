@@ -25,7 +25,28 @@ fun evalCons(params: List<Any>): Datastructure {
         list.add(cdr)
     }
     return Datastructure(list)
+}
 
+fun evalLength(params: List<Any>): Int {
+    if(params.size != 1) {
+        throw IllegalArgumentException("Wrong number of parameters for length!")
+    }
+    val datastructure = eval(params[0]) as Datastructure
+    if (!datastructure.isList()) {
+        throw IllegalArgumentException("length needs a list as a parameter!")
+    }
+    return datastructure.size()
+}
+
+fun evalIsListEmpty(params: List<Any>): Boolean {
+    if(params.size != 1) {
+        throw IllegalArgumentException("Wrong number of parameters for null?!")
+    }
+    val datastructure = eval(params[0]) as Datastructure
+    if (!datastructure.isList()) {
+        throw IllegalArgumentException("null? needs a list as a parameter!")
+    }
+    return datastructure.isEmpty()
 }
 
 fun evalCar(param: List<Any>) = param.asDatastructure().car()
