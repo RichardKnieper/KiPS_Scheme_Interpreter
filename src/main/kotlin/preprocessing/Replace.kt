@@ -4,25 +4,43 @@ import domain.Token
 
 @Suppress("UNCHECKED_CAST")
 fun replace(expression: List<Any>): List<Any> {
-    return expression.map {
-        if (it !is List<*>) {
-            return@map it
+    fun runReplace(exp: Any, call: (List<Any>) -> List<Any>, condition: (List<Any>) -> Boolean): Any {
+        if (exp !is List<*>) {
+            return exp
         }
-        it as List<Any>
-        when {
-            it[0] == Token.DEFINE && it[1] is List<*> -> it.defineMethodAsLambda()
-            it[0] == Token.COND -> it.condAsIf()
-            else -> it
+        exp as List<Any>
+        if (exp.isEmpty()) {
+            return exp
         }
+
+        return (if(condition(exp)) {
+            call(exp)
+        } else {
+            exp
+        }).map { runReplace(it, call, condition) }
     }
+
+    var output = runReplace(expression, ::defineMethodAsLambda) {
+            exp -> exp[0] == Token.DEFINE && exp[1] is List<*>
+    } as List<Any>
+
+    output = runReplace(output, ::condAsIf) {
+        exp -> exp[0] == Token.COND
+    } as List<Any>
+
+    output = runReplace(output, ::letAsLambda) {
+        exp -> exp[0] == Token.LET
+    } as List<Any>
+
+    return output
 }
 
 @Suppress("UNCHECKED_CAST")
-private fun List<Any>.defineMethodAsLambda(): List<Any> {
-    val declaration = this[1] as List<Any>
+private fun defineMethodAsLambda(list: List<Any>): List<Any> {
+    val declaration = list[1] as List<Any>
     val name = declaration[0]
     val variables = declaration.getParams()
-    val methods = this.subList(2, this.size).map {
+    val methods = list.subList(2, list.size).map {
         if (it is List<*>) {
             replace(it as List<Any>)
         } else {
@@ -35,8 +53,8 @@ private fun List<Any>.defineMethodAsLambda(): List<Any> {
 }
 
 @Suppress("UNCHECKED_CAST")
-private fun List<Any>.condAsIf(): List<Any> {
-    val params = this.getParams()
+private fun condAsIf(list: List<Any>): List<Any> {
+    val params = list.getParams()
 
     var output: MutableList<Any>? = null
     for(i in params.size - 1 downTo 0) {
@@ -48,6 +66,27 @@ private fun List<Any>.condAsIf(): List<Any> {
         output = new
     }
     return output!!
+}
+
+@Suppress("UNCHECKED_CAST")
+private fun letAsLambda(list: List<Any>): List<Any> {
+    val declerations = (list[1] as List<Any>).associate {
+        it as List<Any>
+        it[0] to it[1]
+    }
+    val method = list[2]
+
+    val params = mutableListOf<Any>()
+    val input = mutableListOf<Any>()
+    declerations.forEach { (key, value) ->
+        params.add(key)
+        input.add(value)
+    }
+
+    val expression = mutableListOf<Any>()
+    expression.add(listOf(Token.LAMBDA, params, method))
+    expression.addAll(input)
+    return expression
 }
 
 @Suppress("UNCHECKED_CAST")

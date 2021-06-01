@@ -1,4 +1,4 @@
 (define a 10)
 (define fiveA (lambda () (set! a 5)))
 (fiveA)
-a
+(= a 5)

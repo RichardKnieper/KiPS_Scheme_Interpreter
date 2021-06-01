@@ -1,9 +1,8 @@
 package evalutation
 
-import CURRENT_CLOSURE
+import ENVIRONMENT
 import domain.Closure
 import domain.Token
-import java.lang.IllegalArgumentException
 
 /**
  * ((lambda (x) (* x x)) 2)
@@ -28,10 +27,12 @@ fun evalLambda(params: List<String>, methods: List<Any>, returnMethod: Any, inpu
         listOf(returnMethod)
     }
 
-    val closureEnv = params.mapIndexed { i, param -> param to input[i] }.toMap().toMutableMap()
+    val closureEnv = params.mapIndexed { i, param ->
+        param to eval(input[i])
+    }.toMap().toMutableMap()
 
-    val closure = Closure(returnMethodAsList, closureEnv, CURRENT_CLOSURE)
-    CURRENT_CLOSURE = closure
+    val closure = Closure(returnMethodAsList, closureEnv, ENVIRONMENT.getFirstClosure())
+    ENVIRONMENT.setFirstClosure(closure)
 
     methods.forEach { eval(it) }
 
@@ -41,10 +42,14 @@ fun evalLambda(params: List<String>, methods: List<Any>, returnMethod: Any, inpu
         eval(returnMethodAsList)
     }
 
-    CURRENT_CLOSURE = CURRENT_CLOSURE!!.parent
+    if(closure.parent == null) {
+        ENVIRONMENT.removeFirstClosure()
+    } else {
+        ENVIRONMENT.setFirstClosure(closure.parent)
+    }
 
     return if(output is List<*> && output[0] == Token.LAMBDA) {
-        Closure(output as List<Any>, closureEnv, CURRENT_CLOSURE)
+        Closure(output as List<Any>, closureEnv, ENVIRONMENT.getFirstClosure())
     } else {
         output
     }

@@ -1,12 +1,12 @@
 import domain.Closure
+import domain.Environment
 import domain.Token
 import evalutation.eval
 import preprocessing.replace
 import preprocessing.tokenize
 import java.io.File
 
-val ENVIRONMENT = mutableMapOf<String, Any>()
-var CURRENT_CLOSURE: Closure? = null
+val ENVIRONMENT = Environment()
 
 fun main(args: Array<String>) {
     while (true) {
@@ -14,7 +14,11 @@ fun main(args: Array<String>) {
         var input = readLine().toString()
 
         when {
-            input == ":q" -> break
+            input == ":q" || input == ":quit" -> break
+            input == ":c" || input == ":clear" -> {
+                ENVIRONMENT.clear()
+                continue
+            }
 
             input.startsWith(":t ") -> {
                 val name = input.replace(":t ", "")
@@ -38,13 +42,14 @@ fun main(args: Array<String>) {
                 val toPrint = when (evaluated) {
                     is Closure -> "#<procedure:$it>"
                     Token.LIST_END -> "()"
+                    is Unit -> return@forEach
                     else -> evaluated
                 }
                 println(toPrint)
             } catch (e: Exception) {
-//                println("Something went wrong")
+//                println("Something went wrong: ${e.message}")
                 e.printStackTrace()
-                CURRENT_CLOSURE = null
+                ENVIRONMENT.clear()
             }
         }
     }

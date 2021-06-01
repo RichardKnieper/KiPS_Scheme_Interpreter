@@ -27,7 +27,7 @@ fun evalCons(params: List<Any>): Datastructure {
     return Datastructure(list)
 }
 
-fun evalLength(params: List<Any>): Int {
+fun evalLength(params: List<Any>): Double {
     if(params.size != 1) {
         throw IllegalArgumentException("Wrong number of parameters for length!")
     }
@@ -35,7 +35,7 @@ fun evalLength(params: List<Any>): Int {
     if (!datastructure.isList()) {
         throw IllegalArgumentException("length needs a list as a parameter!")
     }
-    return datastructure.size()
+    return datastructure.size().toDouble()
 }
 
 fun evalIsListEmpty(params: List<Any>): Boolean {

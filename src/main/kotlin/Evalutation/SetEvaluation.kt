@@ -1,8 +1,6 @@
 package evalutation
 
-import CURRENT_CLOSURE
 import ENVIRONMENT
-import java.lang.IllegalArgumentException
 
 fun evalSet(params: List<Any>) {
     if(params.size != 2) {
@@ -12,19 +10,9 @@ fun evalSet(params: List<Any>) {
     val key = params[0] as String
     val value = eval(params[1])
 
-    var closure = CURRENT_CLOSURE
-    while (closure != null) {
-        if(key in closure.env) {
-            closure.env[key] = value
-            return
-        }
-        closure = closure.parent
+    if(!ENVIRONMENT.exists(key)) {
+        throw IllegalArgumentException("Cannot set variable before its definition: $key")
     }
 
-    if (key in ENVIRONMENT) {
-        ENVIRONMENT[key] = value
-        return
-    }
-
-    throw IllegalArgumentException("Cannot set variable before its definition: $key")
+    ENVIRONMENT.set(key, value)
 }

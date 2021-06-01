@@ -28,5 +28,7 @@ enum class Token {
     CDR,
     LIST_END, // '()
     LENGTH,
-    IS_LIST_EMPTY
+    IS_LIST_EMPTY,
+
+    LET
 }

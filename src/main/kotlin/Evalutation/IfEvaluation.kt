@@ -1,7 +1,5 @@
 package evalutation
 
-import java.lang.IllegalArgumentException
-
 fun evalIf(params: List<Any>): Any {
     val predicate = eval(params[0]) as Boolean
     return when {

@@ -1,6 +1,5 @@
 package evalutation
 
-import CURRENT_CLOSURE
 import ENVIRONMENT
 import domain.Closure
 import domain.Datastructure
@@ -8,26 +7,21 @@ import domain.Token
 
 @Suppress("UNCHECKED_CAST")
 fun eval(expression: Any): Any {
-    if (expression is Double || expression is Boolean) {
-        return expression
-    }
-
-    var closure = CURRENT_CLOSURE
-    while (closure != null) {
-        if(expression in closure.env) {
-            return closure.env[expression]!!
-        }
-        closure = closure.parent
-    }
-
     when (expression) {
-        in ENVIRONMENT -> return eval(ENVIRONMENT[expression]!!)
+        is Double -> return expression
+        is Boolean -> return expression
+        is String -> return eval(ENVIRONMENT.find(expression))
         is Datastructure -> return expression
         is Closure -> return expression
         Token.LIST_END -> return expression
     }
 
-    expression as List<Any>
+    try {
+        expression as List<Any>
+    } catch (e: Exception) {
+        println(expression)
+        throw e
+    }
 
     return when (expression[0]) {
 
@@ -44,7 +38,7 @@ fun eval(expression: Any): Any {
         Token.MORE_EQUAL -> evalMoreEqual(expression.getParams())
         Token.LESS_EQUAL -> evalLessEqual(expression.getParams())
 
-        Token.LAMBDA -> Closure(expression, mutableMapOf(), CURRENT_CLOSURE)
+        Token.LAMBDA -> Closure(expression, mutableMapOf(), ENVIRONMENT.getFirstClosure())
         Token.DEFINE -> evalDefine(expression.getParams())
         Token.SET -> evalSet(expression.getParams())
 
@@ -58,19 +52,12 @@ fun eval(expression: Any): Any {
         Token.IS_LIST_EMPTY -> evalIsListEmpty(expression.getParams())
 
         else -> {
-            closure = CURRENT_CLOSURE
-            while (closure != null) {
-                if(expression[0] in closure.env) {
-                    return evalClosure(closure.env[expression[0]]!!, expression.getParams())
-                }
-                closure = closure.parent
-            }
-
-            if (expression[0] in ENVIRONMENT) {
-                return evalClosure(ENVIRONMENT[expression[0]]!!, expression.getParams())
-            }
-
             var current = expression[0]
+
+            if(current is String) {
+                val savedValue = ENVIRONMENT.find(current)
+                return evalClosure(savedValue, expression.getParams())
+            }
 
             if (current is List<*> && current[0] == Token.LAMBDA) {
                 // expression: [[LAMBDA, [x], [MULTIPLY, x, x]], 10]

@@ -1,0 +1,30 @@
+(define (square x) (* x x))
+
+(define (calc x y)
+  (let ((a (+ x y)))
+        (- (square a) a)))
+
+(define (calcl x y)
+  ((lambda (a) (- (square a) a)) (+ x y)))
+
+(= (calc 2 3) 20)
+(= (calcl 2 3) 20)
+
+(define (test x y)
+  (let ((a (* x y))
+        (b (+ x y)))
+    (- a b)))
+(= (test 5 5) 15)
+
+(define (testl x y)
+  ((lambda (a b) (- a b))(* x y)(+ x y)))
+(= (testl 5 5) 15)
+
+(define (myMethod y)
+          (let
+              ((b (* y 2)))
+            b))
+(define (timesFour x)
+  (let ((a (* x 2)))
+        (myMethod a)))
+(= (timesFour 10) 40)

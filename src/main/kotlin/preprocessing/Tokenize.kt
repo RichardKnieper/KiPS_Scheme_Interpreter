@@ -88,6 +88,8 @@ private fun Any.toToken(): Any {
             "length" -> Token.LENGTH
             "null?" -> Token.IS_LIST_EMPTY
 
+            "let" -> Token.LET
+
             else -> this
         }
     }

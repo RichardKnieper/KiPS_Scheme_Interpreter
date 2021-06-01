@@ -1,4 +1,4 @@
 (define square (lambda (x) (* x x)))
-(square 10)
+(= (square 10) 100)
 (define mathFive (lambda (x) (x 5)))
-(mathFive square)
+(= (mathFive square) 25)

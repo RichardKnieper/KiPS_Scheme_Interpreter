@@ -3,4 +3,4 @@
         (set! saldo (+ saldo betrag))
         saldo))
 (define konto (erzeuge-konto 1000))
-(konto 100)
+(= (konto 100) 1100)
