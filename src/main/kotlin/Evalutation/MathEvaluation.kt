@@ -1,5 +1,7 @@
 package evalutation
 
+import kotlin.math.round
+
 fun evalAdd(params: List<Any>): Double {
     return params.sumOf {
         eval(it) as Double
@@ -31,4 +33,11 @@ fun evalDivide(params: List<Any>): Double {
             dividend /= eval(it) as Double
         }
     return dividend
+}
+
+fun evalRound(params: List<Any>): Double {
+    if(params.size != 1) {
+        throw IllegalArgumentException("Wrong number of arguments for round: ${params.size}!")
+    }
+    return round(eval(params[0]) as Double)
 }

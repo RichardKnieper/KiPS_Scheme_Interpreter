@@ -8,6 +8,8 @@ enum class Token {
     MULTIPLY,
     DIVIDE,
 
+    ROUND,
+
     // Comparison operators
     LESS,           // <
     MORE,           // >

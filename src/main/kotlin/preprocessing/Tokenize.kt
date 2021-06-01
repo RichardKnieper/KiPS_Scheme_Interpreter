@@ -65,6 +65,8 @@ private fun Any.toToken(): Any {
             "*" -> Token.MULTIPLY
             "/" -> Token.DIVIDE
 
+            "round" -> Token.ROUND
+
             // Comparison operators
             "<" -> Token.LESS
             ">" -> Token.MORE

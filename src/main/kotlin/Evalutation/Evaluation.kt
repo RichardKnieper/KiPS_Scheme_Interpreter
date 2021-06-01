@@ -38,6 +38,8 @@ fun eval(expression: Any): Any {
         Token.MORE_EQUAL -> evalMoreEqual(expression.getParams())
         Token.LESS_EQUAL -> evalLessEqual(expression.getParams())
 
+        Token.ROUND -> evalRound(expression.getParams())
+
         Token.LAMBDA -> Closure(expression, mutableMapOf(), ENVIRONMENT.getFirstClosure())
         Token.DEFINE -> evalDefine(expression.getParams())
         Token.SET -> evalSet(expression.getParams())
