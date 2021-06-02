@@ -1,25 +1,55 @@
 package preprocessing
 
+import domain.StringWrapper
 import domain.Token
 import java.lang.Double.parseDouble
 
-fun tokenize(input: String) = input.preTokenize().parseToList().parseToTokens()
-
-private fun String.preTokenize(): List<Any> {
-    val output = mutableListOf<Any>()
-    this.split("'()")
-        .forEach {
-            output.add(it)
-            output.add(Token.LIST_END)
-        }
-    return output.subList(0, output.size - 1)
+fun tokenize(input: String): List<Any> {
+    return input.wrapStrings()
+        .takeAwayListEnds()
+        .parseToList()
+        .parseToTokens()
 }
 
-@Suppress("UNCHECKED_CAST")
+private fun String.wrapStrings(): List<Any> {
+    val count = this.filter { it.toString() == "\"" }.count()
+    if (count % 2 != 0) {
+        throw IllegalArgumentException()
+    }
+
+    val list = mutableListOf<Any>()
+    var split = this.split("\"", limit = 3)
+    while(split.size == 3) {
+        list.add(split[0])
+        list.add(StringWrapper(split[1]))
+        split = split[2].split("\"", limit = 3)
+    }
+    list.add(split[0])
+    return list.filter { it.toString() != " " }
+}
+
+private fun List<Any>.takeAwayListEnds(): List<Any> {
+    val output = mutableListOf<Any>()
+    this.forEach {
+        when (it) {
+            is StringWrapper -> output.add(it)
+            is String -> {
+                it.split("'()")
+                    .forEach {
+                        output.add(it)
+                        output.add(Token.LIST_END)
+                    }
+                output.removeLast()
+            }
+        }
+    }
+    return output.filter { it.toString() != " " }
+}
+
 private fun List<Any>.parseToList(): List<Any> {
     val output = mutableListOf<Any>()
     this.forEach {
-        if(it == Token.LIST_END) {
+        if(it == Token.LIST_END || it is StringWrapper) {
             output.add(it)
         } else {
             output.addAll((it as String).parseToList())

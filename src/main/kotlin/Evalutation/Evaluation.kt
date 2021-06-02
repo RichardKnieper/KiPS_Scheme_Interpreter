@@ -3,25 +3,22 @@ package evalutation
 import ENVIRONMENT
 import domain.Closure
 import domain.Datastructure
+import domain.StringWrapper
 import domain.Token
 
 @Suppress("UNCHECKED_CAST")
 fun eval(expression: Any): Any {
     when (expression) {
+        is String -> return eval(ENVIRONMENT.find(expression))
         is Double -> return expression
         is Boolean -> return expression
-        is String -> return eval(ENVIRONMENT.find(expression))
         is Datastructure -> return expression
         is Closure -> return expression
+        is StringWrapper -> return expression
         Token.LIST_END -> return expression
     }
 
-    try {
-        expression as List<Any>
-    } catch (e: Exception) {
-        println(expression)
-        throw e
-    }
+    expression as List<Any>
 
     return when (expression[0]) {
 
