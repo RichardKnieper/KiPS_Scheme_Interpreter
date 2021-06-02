@@ -1,0 +1,5 @@
+(define a (list "1 2 3" '() "1 '() 2"))
+a
+(car a)
+(car (cdr a))
+(car (cdr (cdr a)))

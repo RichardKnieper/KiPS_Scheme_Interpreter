@@ -1,7 +1,6 @@
 package domain
 
 class Environment {
-
     private val global = mutableMapOf<String, Any>()
     private val closures = ArrayDeque<Closure>()
 
