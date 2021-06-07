@@ -121,6 +121,8 @@ private fun Any.toToken(): Any {
             "null?" -> Token.IS_LIST_EMPTY
 
             "let" -> Token.LET
+            "quote" -> Token.QUOTE
+            "'" -> Token.APOSTROPHE
 
             else -> this
         }

@@ -32,5 +32,7 @@ enum class Token {
     LENGTH,
     IS_LIST_EMPTY,
 
-    LET
+    LET,
+    QUOTE,
+    APOSTROPHE
 }

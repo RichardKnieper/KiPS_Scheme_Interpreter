@@ -1,0 +1,23 @@
+(define a (quote 1))
+a
+
+(define b (quote ((1 2))))
+b
+
+(define c (quote ("eins" 2 3)))
+c
+
+(define d (quote '(1 2 3)))
+d
+
+(define e (quote '()))
+e
+
+(define f (quote (1 2 '())))
+f
+
+(define g (quote '(   2   3 4 '())))
+g
+
+(define h "  32 3 2 32 3 ")
+h

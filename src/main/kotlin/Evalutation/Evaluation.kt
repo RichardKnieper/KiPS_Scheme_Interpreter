@@ -1,10 +1,7 @@
 package evalutation
 
 import ENVIRONMENT
-import domain.Closure
-import domain.Datastructure
-import domain.StringWrapper
-import domain.Token
+import domain.*
 
 @Suppress("UNCHECKED_CAST")
 fun eval(expression: Any): Any {
@@ -15,6 +12,7 @@ fun eval(expression: Any): Any {
         is Datastructure -> return expression
         is Closure -> return expression
         is StringWrapper -> return expression
+        is Quote -> return expression
         Token.LIST_END -> return expression
     }
 
@@ -49,6 +47,9 @@ fun eval(expression: Any): Any {
         Token.CDR -> evalCdr(expression.getParams())
         Token.LENGTH -> evalLength(expression.getParams())
         Token.IS_LIST_EMPTY -> evalIsListEmpty(expression.getParams())
+
+        Token.QUOTE -> evalQuote(expression.getParams())
+//        Token.APOSTROPHE -> // TODO
 
         else -> {
             var current = expression[0]
