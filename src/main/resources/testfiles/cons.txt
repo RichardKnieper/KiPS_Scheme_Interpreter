@@ -23,3 +23,13 @@ f
 (define g (list))
 (= (length g) 0)
 (null? g)
+
+(define a (cons 1 (cons 2 3)))
+(cdr a)
+
+(define b (cons 1 (cons 2 (cons 3 4))))
+(cdr b)
+
+(define c (cons (cons 1 2) 3))
+(car c)
+(cdr c)

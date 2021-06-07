@@ -2,7 +2,13 @@ package domain
 
 class Datastructure(val list: List<Any>) {
     fun car() = list[0]
-    fun cdr() = Datastructure(list.subList(1, list.size))
+    fun cdr(): Any {
+        return if(isList() || list.size >= 3) {
+            Datastructure(list.subList(1, list.size))
+        } else {
+            list[1]
+        }
+    }
 
     fun isList() = list.last() == Token.LIST_END
     fun size() = list.size - 1
