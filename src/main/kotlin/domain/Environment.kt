@@ -60,7 +60,13 @@ class Environment {
     }
 
     fun addFirstClosure(closure: Closure) = closures.addFirst(closure)
-    fun setFirstClosure(closure: Closure) { closures[0] = closure }
+    fun setFirstClosure(closure: Closure) {
+        if (closures.size > 0) {
+            closures[0] = closure
+        } else {
+            closures.add(closure)
+        }
+    }
     fun removeFirstClosure() = closures.removeFirst()
     fun clear() {
         global.clear()

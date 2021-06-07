@@ -24,12 +24,15 @@ f
 (= (length g) 0)
 (null? g)
 
-(define a (cons 1 (cons 2 3)))
-(cdr a)
+(define h (cons 1 (cons 2 3)))
+(cdr h)
 
-(define b (cons 1 (cons 2 (cons 3 4))))
-(cdr b)
+(define i (cons 1 (cons 2 (cons 3 4))))
+(cdr i)
 
-(define c (cons (cons 1 2) 3))
-(car c)
-(cdr c)
+(define j (cons (cons 1 2) 3))
+(car j)
+(cdr j)
+
+(define k '(1 2 3))
+k

@@ -49,31 +49,34 @@ fun eval(expression: Any): Any {
         Token.IS_LIST_EMPTY -> evalIsListEmpty(expression.getParams())
 
         Token.QUOTE -> evalQuote(expression.getParams())
-//        Token.APOSTROPHE -> // TODO
 
         else -> {
             var current = expression[0]
 
-            if(current is String) {
-                val savedValue = ENVIRONMENT.find(current)
-                return evalClosure(savedValue, expression.getParams())
-            }
-
-            if (current is List<*> && current[0] == Token.LAMBDA) {
-                // expression: [[LAMBDA, [x], [MULTIPLY, x, x]], 10]
-                // bring lambda to correct format for evaluation
-                current = current as List<Any>
-                val params = current[1] as List<String>
-                val methods = try {
-                    current.subList(2, current.size - 1)
-                } catch (ex: Exception){
-                    listOf()
+            return when {
+                current is String -> {
+                    val savedValue = ENVIRONMENT.find(current)
+                    evalClosure(savedValue, expression.getParams())
                 }
-                val returnMethod = current[current.size - 1]
 
-                evalLambda(params, methods, returnMethod, expression.getParams())
-            } else {
-                throw IllegalArgumentException("Invalid token: ${expression[0]}")
+                current == Token.APOSTROPHE -> evalList(expression[1] as List<Any>)
+
+                current is List<*> && current[0] == Token.LAMBDA -> {
+                    // expression: [[LAMBDA, [x], [MULTIPLY, x, x]], 10]
+                    // bring lambda to correct format for evaluation
+                    current = current as List<Any>
+                    val params = current[1] as List<String>
+                    val methods = try {
+                        current.subList(2, current.size - 1)
+                    } catch (ex: Exception){
+                        listOf()
+                    }
+                    val returnMethod = current[current.size - 1]
+
+                    evalLambda(params, methods, returnMethod, expression.getParams())
+                }
+
+                else -> throw IllegalArgumentException("Invalid token: ${expression[0]}")
             }
         }
     }
