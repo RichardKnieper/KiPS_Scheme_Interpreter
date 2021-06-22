@@ -16,8 +16,12 @@ fun eval(expression: Any): Any {
         Token.LIST_END -> return expression
     }
 
+    try {
+        expression as List<Any>
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
     expression as List<Any>
-
     return when (expression[0]) {
 
         // Math operations

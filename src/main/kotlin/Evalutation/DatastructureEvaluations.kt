@@ -48,14 +48,3 @@ fun evalIsListEmpty(params: List<Any>): Boolean {
     }
     return datastructure.isEmpty()
 }
-
-fun evalCar(param: List<Any>) = param.asDatastructure().car()
-fun evalCdr(param: List<Any>) = param.asDatastructure().cdr()
-
-private fun List<Any>.asDatastructure(): Datastructure {
-    return when {
-        this[0] is Datastructure -> this[0]
-        this.size == 1 ->  eval(this[0])
-        else -> throw IllegalArgumentException("Wrong number of arguments for car/cdr!")
-    } as Datastructure
-}

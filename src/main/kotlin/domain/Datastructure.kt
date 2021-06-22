@@ -1,8 +1,8 @@
 package domain
 
-class Datastructure(val list: List<Any>) {
-    fun car() = list[0]
-    fun cdr(): Any {
+class Datastructure(val list: List<Any>): CarCdrAble {
+    override fun car() = list[0]
+    override fun cdr(): Any {
         return if(isList() || list.size >= 3) {
             Datastructure(list.subList(1, list.size))
         } else {

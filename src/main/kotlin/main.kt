@@ -29,7 +29,9 @@ fun main(args: Array<String>) {
                     println("No test with that name exists.")
                     continue
                 }
+                println("Test-Code:")
                 println(input)
+                println("Console output:")
             }
         }
 
@@ -42,6 +44,7 @@ fun main(args: Array<String>) {
                 val toPrint = when (evaluated) {
                     is Closure -> "#<procedure:$it>"
                     Token.LIST_END -> "()"
+                    Token.APOSTROPHE -> "quote"
                     is Unit -> return@forEach
                     else -> evaluated
                 }

@@ -1,0 +1,7 @@
+(car (quote (1 2)))
+(quote '())
+(car (quote '(1 2)))
+(cdr (quote '(1 2)))
+(car (cdr (car (quote ('(1 2) 3)))))
+(car (quote ('(1 2) 3)))
+(cdr (quote ('(1 2) 3)))
