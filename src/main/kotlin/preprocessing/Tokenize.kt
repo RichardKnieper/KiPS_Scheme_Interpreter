@@ -7,7 +7,7 @@ import java.lang.Double.parseDouble
 fun tokenize(input: String): List<Any> {
     return input.wrapStrings()
         .takeAwayListEnds()
-        .parseStringToList()
+        .parseStringsToLists()
         .parseToTokens()
 }
 
@@ -46,7 +46,7 @@ private fun List<Any>.takeAwayListEnds(): List<Any> {
     return output.filter { it.toString() != " " }
 }
 
-private fun List<Any>.parseStringToList(): List<Any> {
+private fun List<Any>.parseStringsToLists(): List<Any> {
     val output = mutableListOf<Any>()
     this.forEach {
         if(it == Token.LIST_END || it is StringWrapper) {
