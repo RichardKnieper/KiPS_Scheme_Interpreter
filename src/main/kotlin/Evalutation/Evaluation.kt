@@ -1,9 +1,10 @@
+@file:Suppress("UNCHECKED_CAST")
+
 package evalutation
 
 import ENVIRONMENT
 import domain.*
 
-@Suppress("UNCHECKED_CAST")
 fun eval(expression: Any): Any {
     when (expression) {
         is String -> return eval(ENVIRONMENT.find(expression))
@@ -16,14 +17,8 @@ fun eval(expression: Any): Any {
         Token.LIST_END -> return expression
     }
 
-    try {
-        expression as List<Any>
-    } catch (e: Exception) {
-        e.printStackTrace()
-    }
     expression as List<Any>
     return when (expression[0]) {
-
         // Math operations
         Token.ADD -> evalAdd(expression.getParams())
         Token.SUBTRACT -> evalSub(expression.getParams())
@@ -86,5 +81,4 @@ fun eval(expression: Any): Any {
     }
 }
 
-@Suppress("UNCHECKED_CAST")
 private fun List<*>.getParams() = this.subList(1, this.size) as List<Any>

@@ -1,41 +1,45 @@
+@file:Suppress("UNCHECKED_CAST")
+
 package preprocessing
 
 import domain.Token
 
-@Suppress("UNCHECKED_CAST")
 fun replace(expression: List<Any>): List<Any> {
-    fun runReplace(exp: Any, call: (List<Any>) -> List<Any>, condition: (List<Any>) -> Boolean): Any {
-        if (exp !is List<*>) {
-            return exp
-        }
-        exp as List<Any>
-        if (exp.isEmpty()) {
-            return exp
-        }
-
-        return (if(condition(exp)) {
-            call(exp)
-        } else {
-            exp
-        }).map { runReplace(it, call, condition) }
-    }
-
-    var output = runReplace(expression, ::defineMethodAsLambda) {
+    var output = replaceRec(expression, ::defineMethodAsLambda) {
             exp -> exp[0] == Token.DEFINE && exp[1] is List<*>
     } as List<Any>
 
-    output = runReplace(output, ::condAsIf) {
+    output = replaceRec(output, ::condAsIf) {
         exp -> exp[0] == Token.COND
     } as List<Any>
 
-    output = runReplace(output, ::letAsLambda) {
+    output = replaceRec(output, ::letAsLambda) {
         exp -> exp[0] == Token.LET
     } as List<Any>
 
     return output
 }
 
-@Suppress("UNCHECKED_CAST")
+private fun replaceRec(
+    exp: Any,
+    mappingFunction: (List<Any>) -> List<Any>,
+    condition: (List<Any>) -> Boolean
+): Any {
+    if (exp !is List<*>) {
+        return exp
+    }
+    exp as List<Any>
+    if (exp.isEmpty()) {
+        return exp
+    }
+
+    return (if(condition(exp)) {
+        mappingFunction(exp)
+    } else {
+        exp
+    }).map { replaceRec(it, mappingFunction, condition) }
+}
+
 private fun defineMethodAsLambda(list: List<Any>): List<Any> {
     val declaration = list[1] as List<Any>
     val name = declaration[0]
@@ -52,7 +56,6 @@ private fun defineMethodAsLambda(list: List<Any>): List<Any> {
     return listOf(Token.DEFINE, name, lambda)
 }
 
-@Suppress("UNCHECKED_CAST")
 private fun condAsIf(list: List<Any>): List<Any> {
     val params = list.getParams()
 
@@ -68,7 +71,6 @@ private fun condAsIf(list: List<Any>): List<Any> {
     return output!!
 }
 
-@Suppress("UNCHECKED_CAST")
 private fun letAsLambda(list: List<Any>): List<Any> {
     val declerations = (list[1] as List<Any>).associate {
         it as List<Any>
@@ -89,5 +91,4 @@ private fun letAsLambda(list: List<Any>): List<Any> {
     return expression
 }
 
-@Suppress("UNCHECKED_CAST")
 private fun List<*>.getParams() = this.subList(1, this.size) as List<Any>

@@ -3,7 +3,6 @@ package evalutation
 import ENVIRONMENT
 import domain.Token
 
-@Suppress("UNCHECKED_CAST")
 fun evalDefine(params: List<Any>) {
     val value = when {
         params.size == 2 -> eval(params[1])

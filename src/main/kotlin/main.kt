@@ -1,14 +1,15 @@
+@file:Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
+
 import domain.Closure
 import domain.Environment
 import domain.Token
 import evalutation.eval
 import preprocessing.replace
 import preprocessing.tokenize
-import java.io.File
 
 val ENVIRONMENT = Environment()
 
-fun main(args: Array<String>) {
+fun main() {
     while (true) {
         print(">> ")
         var input = readLine().toString()
@@ -22,9 +23,9 @@ fun main(args: Array<String>) {
 
             input.startsWith(":t ") -> {
                 val name = input.replace(":t ", "")
-                val path = "C:\\Users\\Richard\\IdeaProjects\\KiPS_Scheme_Interpreter\\src\\main\\resources\\testfiles\\$name.txt"
+                val path = "/testfiles/$name.txt"
                 input = try {
-                    File(path).inputStream().bufferedReader().use { it.readText() }
+                    object {}.javaClass.getResource(path).readText()
                 } catch (e: Exception) {
                     println("No test with that name exists.")
                     continue
@@ -50,9 +51,7 @@ fun main(args: Array<String>) {
                 }
                 println(toPrint)
             } catch (e: Exception) {
-//                println("Something went wrong: ${e.message}")
-                e.printStackTrace()
-                ENVIRONMENT.clear()
+                println("Something went wrong: ${e.message}")
             }
         }
     }

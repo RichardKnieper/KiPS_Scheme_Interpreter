@@ -1,3 +1,5 @@
+@file:Suppress("UNCHECKED_CAST")
+
 package evalutation
 
 import ENVIRONMENT
@@ -10,7 +12,6 @@ import domain.Token
  * method = listOf(ADD, "x", "x") OR ("x")
  * input = listOf(2)
  */
-@Suppress("UNCHECKED_CAST")
 fun evalLambda(params: List<String>, methods: List<Any>, returnMethod: Any, input: List<Any>): Any {
     if (params.size != input.size) {
         throw IllegalArgumentException("Too many or too few parameters!")

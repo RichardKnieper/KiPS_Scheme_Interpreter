@@ -1,6 +1,7 @@
+@file:Suppress("UNCHECKED_CAST")
+
 package domain
 
-@Suppress("UNCHECKED_CAST")
 class Quote(private val element: Any): CarCdrAble {
     override fun car() = when {
         element is List<*> && element[0] == Token.APOSTROPHE && element.size == 2 -> Token.APOSTROPHE
@@ -17,14 +18,12 @@ class Quote(private val element: Any): CarCdrAble {
         else -> throw IllegalArgumentException()
     }
 
-    @Suppress("UNCHECKED_CAST")
     override fun toString() = when (element) {
         is List<*> -> (element as List<Any>).asString()
         Token.LIST_END -> "'()"
         else -> element.toString()
     }
 
-    @Suppress("UNCHECKED_CAST")
     private fun List<Any>.asString(): String {
         var s = ""
         this.forEach {

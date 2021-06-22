@@ -1,7 +1,6 @@
 package domain
 
 enum class Token {
-
     // Math operations
     ADD,
     SUBTRACT,
