@@ -58,7 +58,7 @@ fun eval(expression: Any): Any {
                     evalClosure(savedValue, expression.getParams())
                 }
 
-                current == Token.APOSTROPHE -> evalList(expression[1] as List<Any>)
+                current == Token.APOSTROPHE -> evalQuote(listOf(expression[1] as List<Any>))
 
                 current is List<*> && current[0] == Token.LAMBDA -> {
                     // expression: [[LAMBDA, [x], [MULTIPLY, x, x]], 10]
