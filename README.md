@@ -1,4 +1,4 @@
-# Scheme Compiler - implementiert in Kotlin
+# Scheme Interpreter - implementiert in Kotlin
 
 ### Umgesetzte Sprachbestandteile
 

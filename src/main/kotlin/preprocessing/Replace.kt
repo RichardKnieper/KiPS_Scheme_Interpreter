@@ -60,11 +60,18 @@ private fun condAsIf(list: List<Any>): List<Any> {
     val params = list.getParams()
 
     var output: MutableList<Any>? = null
-    for(i in params.size - 1 downTo 0) {
+    for(i in params.size - 2 downTo 0) {
         val it = params[i] as List<Any>
         val new = mutableListOf(Token.IF, it[0], it[1])
         if (output != null) {
             new.add(output)
+        } else {
+            val toAdd = params[params.size - 1] as List<Any>
+            if (toAdd.size == 1) {
+                new.add(toAdd[0])
+            } else {
+                new.add(toAdd)
+            }
         }
         output = new
     }
